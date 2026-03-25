@@ -87,8 +87,31 @@ final_chain = (
                     RunnableParallel(branches = {"linkedin": chain_linkedin, "instagram": insta_chain_runnable})
 )
 
-res= final_chain.invoke("AVATAR")
-print("LinkedIn Post:\n", res)
+final_chain.invoke("AVATAR")
+################Chain as a Runnable#########
+# TASK - 1 [Beautify Function]
+
+def beautify(final_response:dict)-> dict:
+
+    linkedin_response = final_response['branches']['linkedin']
+    instagram_response = final_response['branches']['instagram']
+
+    return {"linkedin": linkedin_response, "instagram": instagram_response}
+
+beautify_runnable = RunnableLambda(beautify)
+
+
+# TASK - 2 [Final Chain]
+
+# final_chain 
+
+
+# Beautified Chain
+beautified_chain = final_chain | beautify_runnable
+
+res=beautified_chain.invoke("Pushpa")
+print(res)
+
 
 
 
